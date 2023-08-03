@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="register">
+        <div class="form-container">
+            <div class="image-holder"></div>
+            <form method="post" onsubmit="return validateForm()">
+                <h2 class="text-center"><strong>Create</strong> an account.</h2>
+                <div class="form-group">
+                    <input class="form-control" type="email" name="email" id="email" placeholder="Email">
+                    <span id="email-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" name="password" id="password" placeholder="Password">
+                    <span id="password-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" name="password-repeat" id="password-repeat" placeholder=" Confirm Password">
+                    <span id="password-repeat-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" id="agree">I agree to the license terms.</label></div>
+                    <span id="agree-error" class="error-message"></span>
+                </div>
+                <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Sign Up</button></div>
+                <a href="#" class="already">You already have an account? Login here.</a>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Function to display error messages below the respective textboxes
+        function showErrorMessage(inputField, message) {
+            const errorSpan = document.getElementById(inputField + '-error');
+            errorSpan.textContent = message;
+            errorSpan.style.color = 'red';
+        }
+
+        // Function to hide error messages
+        function hideErrorMessage(inputField) {
+            const errorSpan = document.getElementById(inputField + '-error');
+            errorSpan.textContent = '';
+        }
+
+        // Function to check if the password meets complexity requirements
+        function isPasswordValid(password) {
+            return /^(?=.*[A-Z])(?=.*[a-z])(?=.*[^A-Za-z0-9]).{8,}$/.test(password);
+        }
+        function isEmailValid(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Event listeners for real-time validation
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const passwordRepeatInput = document.getElementById('password-repeat');
+        const agreeInput = document.getElementById('agree');
+
+        emailInput.addEventListener('input', function () {
+            const email = this.value.trim();
+            if (email === '') {
+                showErrorMessage('email', 'Please enter your email.');
+            } else if (!isEmailValid(email)) {
+                showErrorMessage('email', 'Please enter a valid email address.');
+            } else {
+                hideErrorMessage('email');
+            }
+        });
+        passwordInput.addEventListener('input', function () {
+            const password = this.value.trim();
+            if (password === '') {
+                showErrorMessage('password', 'Please enter a password.');
+            } else if (!isPasswordValid(password)) {
+                showErrorMessage('password', 'Password not valid');
+            } else {
+                hideErrorMessage('password');
+            }
+        });
+
+        passwordRepeatInput.addEventListener('input', function () {
+            const password = passwordInput.value.trim();
+            const passwordRepeat = this.value.trim();
+            if (passwordRepeat === '') {
+                showErrorMessage('password-repeat', 'Please confirm your password.');
+            } else if (passwordRepeat !== password) {
+                showErrorMessage('password-repeat', 'Passwords do not match.');
+            } else {
+                hideErrorMessage('password-repeat');
+            }
+        });
+
+        agreeInput.addEventListener('input', function () {
+            if (!this.checked) {
+                showErrorMessage('agree', 'Please agree to the license terms.');
+            } else {
+                hideErrorMessage('agree');
+            }
+        });
+
+        // Form validation on submit
+        function validateForm() {
+            // Additional validation checks for email, password match, and checkbox agreement...
+            // ...
+
+            // Return true to submit the form
+            return true;
+        }
+    </script>
+</body>
+</html>
